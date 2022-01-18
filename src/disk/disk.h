@@ -1,7 +1,9 @@
 #ifndef DISK_H
 #define DISK_H
 
-typedef unsigned int PEACHOS_DISK_TYPE;
+#include "fs/file.h"
+
+typedef unsigned int PIXIEOS_DISK_TYPE;
 
 
 // Represents a real physical hard disk
@@ -9,8 +11,10 @@ typedef unsigned int PEACHOS_DISK_TYPE;
 
 struct disk
 {
-    PEACHOS_DISK_TYPE type;
+    PIXIEOS_DISK_TYPE type;
     int sector_size;
+
+    struct filesystem* filesystem;
 };
 
 void disk_search_and_init();
