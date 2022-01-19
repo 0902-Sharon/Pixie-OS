@@ -7,4 +7,5 @@
 #define ENOMEM 3    //No memory
 #define EBADPATH 4   // Bad Call
 #define EFSNOTUS 5   //Not from the filesystem
+#define ERDONLY 6   //Error Read Only
 #endif
