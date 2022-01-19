@@ -15,14 +15,14 @@ typedef unsigned char HEAP_BLOCK_TABLE_ENTRY;
 
 struct heap_table
 {
-    HEAP_BLOCK_TABLE_ENTRY* entries;
-    size_t total;
+    HEAP_BLOCK_TABLE_ENTRY* entries; //pointer to the entry
+    size_t total; //total number of entries/blocks in the heap table
 };
 
 
 struct heap
 {
-    struct heap_table* table;
+    struct heap_table* table; //pointer to heap table
 
     // Start address of the heap data pool
     void* saddr;

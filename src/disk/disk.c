@@ -4,7 +4,7 @@
 #include "status.h"
 #include "memory/memory.h"
 
-struct disk disk;
+struct disk disk; //represents the primary hard disk
 
 int disk_read_sector(int lba, int total, void* buf)
 {
@@ -15,6 +15,9 @@ int disk_read_sector(int lba, int total, void* buf)
     outb(0x1F5, (unsigned char)(lba >> 16));
     outb(0x1F7, 0x20);
 
+    /*Outputiing the necessary bytes to the buffer, so that the disc controller can read from it
+    * we'll read two bytes at a time from  the disc controller
+    */
     unsigned short* ptr = (unsigned short*) buf;
     for (int b = 0; b < total; b++)
     {
@@ -59,6 +62,6 @@ int disk_read_block(struct disk* idisk, unsigned int lba, int total, void* buf)
     {
         return -EIO;
     }
-
+    //currently there is only a single disk, disk 0
     return disk_read_sector(lba, total, buf);
 }

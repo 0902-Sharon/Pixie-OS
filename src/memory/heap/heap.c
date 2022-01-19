@@ -15,6 +15,7 @@ static int heap_validate_table(void* ptr, void* end, struct heap_table* table)
         res = -EINVARG;
         goto out;
     }
+    //checking to see is the passed ptrs refer to the correct heap table address
 
 out:
     return res;
@@ -23,6 +24,7 @@ out:
 static bool heap_validate_alignment(void* ptr)
 {
     return ((unsigned int)ptr % PIXIEOS_HEAP_BLOCK_SIZE) == 0;
+    //check alignment to multiples of 4096 blocks
 }
 
 int heap_create(struct heap* heap, void* ptr, void* end, struct heap_table* table)
@@ -31,7 +33,7 @@ int heap_create(struct heap* heap, void* ptr, void* end, struct heap_table* tabl
 
     if (!heap_validate_alignment(ptr) || !heap_validate_alignment(end))
     {
-        res = -EINVARG;
+        res = -EINVARG; 
         goto out;
     }
 
@@ -62,11 +64,14 @@ static uint32_t heap_align_value_to_upper(uint32_t val)
     val = (val - ( val % PIXIEOS_HEAP_BLOCK_SIZE));
     val += PIXIEOS_HEAP_BLOCK_SIZE;
     return val;
+    /**
+     * get the reminder and allot the next block
+     */
 }
 
 static int heap_get_entry_type(HEAP_BLOCK_TABLE_ENTRY entry)
 {
-    return entry & 0x0f;
+    return entry & 0x0f; //returns the last four bits,val & 1111
 }
 
 int heap_get_start_block(struct heap* heap, uint32_t total_blocks)
@@ -79,8 +84,8 @@ int heap_get_start_block(struct heap* heap, uint32_t total_blocks)
     {
         if (heap_get_entry_type(table->entries[i]) != HEAP_BLOCK_TABLE_ENTRY_FREE)
         {
-            bc = 0;
-            bs = -1;
+            bc = 0;     //current block
+            bs = -1;    //starting block
             continue;
         }
 

@@ -10,11 +10,11 @@ global enable_interrupts
 global disable_interrupts
 
 enable_interrupts:
-    sti
+    sti                 ;start interrupts
     ret
 
 disable_interrupts:
-    cli
+    cli                 ;clear interrupts
     ret
 
 
@@ -22,14 +22,14 @@ idt_load:
     push ebp
     mov ebp, esp
 
-    mov ebx, [ebp+8]
-    lidt [ebx]
+    mov ebx, [ebp+8]  ;loading the address of the IDTR into resgister
+    lidt [ebx]        ; Loading the IDTR
     pop ebp    
     ret
 
 
 int21h:
-    cli
+    cli                 ;clearing interrupts
     pushad
     call int21h_handler
     popad

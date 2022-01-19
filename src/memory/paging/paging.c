@@ -4,7 +4,7 @@
 void paging_load_directory(uint32_t* directory);
 
 static uint32_t* current_directory = 0;
-struct paging_4gb_chunk* paging_new_4gb(uint8_t flags)
+struct paging_4gb_chunk* paging_new_4gb(uint8_t flags) 
 {
     uint32_t* directory = kzalloc(sizeof(uint32_t) * PAGING_TOTAL_ENTRIES_PER_TABLE);
     int offset = 0;
@@ -22,6 +22,7 @@ struct paging_4gb_chunk* paging_new_4gb(uint8_t flags)
     struct paging_4gb_chunk* chunk_4gb = kzalloc(sizeof(struct paging_4gb_chunk));
     chunk_4gb->directory_entry = directory;
     return chunk_4gb;
+    //initializing the page directory entries and the page table entries with the required block size
 }
 
 void paging_switch(uint32_t* directory)
@@ -51,6 +52,10 @@ int paging_get_indexes(void* virtual_address, uint32_t* directory_index_out, uin
 
     *directory_index_out = ((uint32_t)virtual_address / (PAGING_TOTAL_ENTRIES_PER_TABLE * PAGING_PAGE_SIZE));
     *table_index_out = ((uint32_t) virtual_address % (PAGING_TOTAL_ENTRIES_PER_TABLE * PAGING_PAGE_SIZE) / PAGING_PAGE_SIZE);
+    /**
+    * Page table directory = virtual address % (1024 * 4096)
+    *  Page table index = (virtual address % (1034 * 4096))  /  4096
+    */
 out:
     return res;
 }
@@ -71,8 +76,8 @@ int paging_set(uint32_t* directory, void* virt, uint32_t val)
     }
 
     uint32_t entry = directory[directory_index];
-    uint32_t* table = (uint32_t*)(entry & 0xfffff000);
-    table[table_index] = val;
+    uint32_t* table = (uint32_t*)(entry & 0xfffff000); //extracting the 20 first address bits
+    table[table_index] = val; //physical address is assigned to the page table entry requested
 
     return 0;
 }

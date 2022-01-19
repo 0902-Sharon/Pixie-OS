@@ -2,7 +2,7 @@
 #define IDT_H
 
 #include <stdint.h>
-struct idt_desc
+struct idt_desc //structure of  the IDT
 {
     uint16_t offset_1; // Offset bits 0 - 15
     uint16_t selector; // Selector thats in our GDT
